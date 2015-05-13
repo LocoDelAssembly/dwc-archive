@@ -1,16 +1,16 @@
 Darwin Core Archive
 ===================
 
-[![Gem Version][1]][2]
-[![Continuous Integration Status][3]][4]
-[![Coverage Status][5]][6]
-[![CodePolice][7]][8]
-[![Dependency Status][9]][10]
+[![Gem Version][gem_svg]][gem_link]
+[![Continuous Integration Status][ci_svg]][ci_link]
+[![Coverage Status][cov_svg]][cov_link]
+[![CodeClimate][code_svg]][code_link]
+[![Dependency Status][deps_svg]][deps_link]
 
 Darwin Core Archive format is a current standard for information exchange
-between Global Names Architecture modules. This gem allows to work with
-Darwin Core Archive data compressed to either zip or tar.gz files.
-More information about Darwing Core Archive can be found on a [GBIF page:][11]
+between Global Names Architecture modules. This gem allows to work with Darwin
+Core Archive data compressed to either zip or tar.gz files.  More information
+about Darwing Core Archive can be found on a [GBIF page:][gbif]
 
 Installation
 ------------
@@ -19,17 +19,17 @@ Installation
 
 ### System Requirements
 
-You need [Redis Server][12] and unzip library installed
+You need [Redis Server][redis] and unzip library installed
 
 
 Usage
 -----
 
 ```ruby
-require 'rubygems'
-require 'dwc_archive'
+require "rubygems"
+require "dwc_archive"
 
-dwc = DarwinCore.new('/path_to_file/archive_file.tar.gz')
+dwc = DarwinCore.new("/path_to_file/archive_file.tar.gz")
 dwc.archive.files      # the archive file list
 dwc.metadata.data      # summary of metadata from eml.xml if it exists
 dwc.metadata.authors   # authors of the archive
@@ -38,9 +38,9 @@ dwc.core.file_path     # path to the DarwinCore main file
 dwc.extensions         # array of DarwinCore Star extensions
 dwc.extensions[0].data # summary for an extension
 
-# read content of the core data file into memory or used with a block
-# it returns array of arrays of data
-# rows that had a wrong encoding will be collected into errors array
+# read content of the core data file into memory or used with a block it
+# returns array of arrays of data rows that had a wrong encoding will be
+# collected into errors array
 data, errors = dwc.core.read
 
 # read content using a block, getting back results in sets of 100 rows each
@@ -60,18 +60,17 @@ tail_data, tail_errors = dwc.core.extensions[0](100) do |data, errors|
 end
 results << [tail_data, tail_errors]
 
-# normalize names in classification collecting together synonyms,
-# canonical names, vernacular names and associating paths to taxons
-# in a classification distributed as DwCA file
+# normalize names in classification collecting together synonyms, canonical
+# names, vernacular names and associating paths to taxons in a classification
+# distributed as DwCA file
 
 result = dwc.normalize_classification
 
 # for a finer control over normalization:
 
-cn = DarwinCore::ClassificationNormalizer.new(dwc)
-cn.normalize
-# if you don't want to generate path consisting of canonical forms
-# of ancestors to a taxon
+cn = DarwinCore::ClassificationNormalizer.new(dwc) cn.normalize
+# if you don't want to generate path consisting of canonical forms of ancestors
+# to a taxon
 cn.normalize(:with_canonical_names => false)
 
 # if you don't want to ingest information from extensions
@@ -96,7 +95,8 @@ Creating a DarwinCore Archive file
 ----------------------------------
 
 ```ruby
-gen = DarwinCore::Generator.new('/tmp/dwc_birches.tar.gz')
+require "dwc_archive"
+gen = DarwinCore::Generator.new("/tmp/dwc_birches.tar.gz")
 
 core = [
   ["http://rs.tdwg.org/dwc/terms/taxonID",
@@ -110,7 +110,7 @@ core = [
 
 vernacular_names = [
   ["http://rs.tdwg.org/dwc/terms/TaxonID",
-  "http://rs.tdwg.org/dwc/terms/vernacularName"],
+   "http://rs.tdwg.org/dwc/terms/vernacularName"],
   [1, "Plants"],
   [1, "Растения"],
   [2, "Birch"],
@@ -120,35 +120,35 @@ vernacular_names = [
 ]
 
 eml = {
-  :id => '1234',
-  :license => 'http://creativecommons.org/licenses/by-sa/3.0/',
-  :title => 'Test Classification',
+  :id => "1234",
+  :license => "http://creativecommons.org/licenses/by-sa/3.0/",
+  :title => "Test Classification",
   :authors => [
-    { :first_name => 'John',
-      :last_name => 'Doe',
-      :email => 'jdoe@example.com',
-      :organization => 'Example',
-      :position => 'Assistant Professor',
-      :url => 'http://example.org' },
-      { :first_name => 'Jane',
-        :last_name => 'Doe',
-        :email => 'jane@example.com' }
+    { :first_name => "John",
+      :last_name => "Doe",
+      :email => "jdoe@example.com",
+      :organization => "Example",
+      :position => "Assistant Professor",
+      :url => "http://example.org" },
+      { :first_name => "Jane",
+        :last_name => "Doe",
+        :email => "jane@example.com" }
 ],
   :metadata_providers => [
-    { :first_name => 'Jim',
-      :last_name => 'Doe',
-      :email => 'jimdoe@example.com',
-      :url => 'http://aggregator.example.org' }],
-  :abstract => 'test classification',
+    { :first_name => "Jim",
+      :last_name => "Doe",
+      :email => "jimdoe@example.com",
+      :url => "http://aggregator.example.org" }],
+  :abstract => "test classification",
   :citation =>
-    'Test classification: Doe John, Doe Jane, Taxnonmy, 10, 1, 2010',
-  :url => 'http://example.com'
+    "Test classification: Doe John, Doe Jane, Taxnonmy, 10, 1, 2010",
+  :url => "http://example.com"
 }
 
-gen.add_core(core, 'core.txt')
+gen.add_core(core, "core.txt")
 gen.add_extension(vernacular_names,
-                  'vernacular_names.txt',
-                  true, 'http://rs.gbif.org/terms/1.0/VernacularName')
+                  "vernacular_names.txt",
+                  true, "http://rs.gbif.org/terms/1.0/VernacularName")
 gen.add_meta_xml
 gen.add_eml_xml(eml)
 gen.pack
@@ -159,7 +159,7 @@ Logging
 
 Gem has ability to show logs of it's events:
 
-    require 'dwc_archive'
+    require "dwc_archive"
     DarwinCore.logger = Logger.new($stdout)
 
 
@@ -179,24 +179,25 @@ Note on Patches/Pull Requests
 Copyright
 ---------
 
-Author -- [Dmitry Mozzherin][13]
+Author -- [Dmitry Mozzherin][dimus]
 
-Contributors -- [Matt Yoder][14]
+Contributors -- [Matt Yoder][mjy]
 
-Copyright (c) 2010-2014 [Marine Biological Laboratory][15]. See LICENSE for details.
+Copyright (c) 2010-2014 [Marine Biological Laboratory][mbl]. See LICENSE for
+details.
 
-[1]: https://badge.fury.io/rb/dwc-archive.png
-[2]: http://badge.fury.io/rb/dwc-archive
-[3]: https://secure.travis-ci.org/GlobalNamesArchitecture/dwc-archive.png
-[4]: http://travis-ci.org/GlobalNamesArchitecture/dwc-archive
-[5]: https://coveralls.io/repos/GlobalNamesArchitecture/dwc-archive/badge.png
-[6]: https://coveralls.io/r/GlobalNamesArchitecture/dwc-archive
-[7]: https://codeclimate.com/github/GlobalNamesArchitecture/dwc-archive.png
-[8]: https://codeclimate.com/github/GlobalNamesArchitecture/dwc-archive
-[9]: https://gemnasium.com/GlobalNamesArchitecture/dwc-archive.png
-[10]: https://gemnasium.com/GlobalNamesArchitecture/dwc-archive
-[11]: http://bit.ly/2IxcBA
-[12]: http://redis.io/topics/quickstart
-[13]: https://github.com/dimus
-[14]: https://github.com/mjy
-[15]: http://mbl.edu
+[gem_svg]: https://badge.fury.io/rb/dwc-archive.svg
+[gem_link]: http://badge.fury.io/rb/dwc-archive
+[ci_svg]: https://secure.travis-ci.org/GlobalNamesArchitecture/dwc-archive.svg
+[ci_link]: http://travis-ci.org/GlobalNamesArchitecture/dwc-archive
+[cov_svg]: https://coveralls.io/repos/GlobalNamesArchitecture/dwc-archive/badge.svg
+[cov_link]: https://coveralls.io/r/GlobalNamesArchitecture/dwc-archive
+[code_svg]: https://codeclimate.com/github/GlobalNamesArchitecture/dwc-archive.svg
+[code_link]: https://codeclimate.com/github/GlobalNamesArchitecture/dwc-archive
+[deps_svg]: https://gemnasium.com/GlobalNamesArchitecture/dwc-archive.svg
+[deps_link]: https://gemnasium.com/GlobalNamesArchitecture/dwc-archive
+[gbif]: http://bit.ly/2IxcBA
+[redis]: http://redis.io/topics/quickstart
+[dimus]: https://github.com/dimus
+[mjy]: https://github.com/mjy
+[mbl]: http://mbl.edu
