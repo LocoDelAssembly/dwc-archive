@@ -19,17 +19,17 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_runtime_dependency "nokogiri", "~> 1.6"
+  gem.add_runtime_dependency "nokogiri", "~> 1.8"
   gem.add_runtime_dependency "parsley-store", "~> 0.3"
-  gem.add_runtime_dependency "archive-tar-minitar", "~> 0.5"
+  gem.add_runtime_dependency "minitar", "~> 0.6"
 
-  gem.add_development_dependency "rake", "~> 10.4"
-  gem.add_development_dependency "bundler", "~> 1.7"
-  gem.add_development_dependency "rspec", "~> 3.2"
-  gem.add_development_dependency "cucumber", "~> 2.0"
+  gem.add_development_dependency "rake", "~> 12.3"
+  gem.add_development_dependency "bundler", "~> 1.16"
+  gem.add_development_dependency "rspec", "~> 3.7"
+  gem.add_development_dependency "cucumber", "~> 3.1"
   gem.add_development_dependency "coveralls", "~> 0.8"
   # gem.add_development_dependency "byebug", "~> 3.4"
-  gem.add_development_dependency "git", "~> 1.2"
-  gem.add_development_dependency "rubocop", "~> 0.30"
-  gem.add_development_dependency "travis-lint", "~> 2.0"
+  gem.add_development_dependency "git", "~> 1.4"
+  gem.add_development_dependency "rubocop", "~> 0.58"
+  gem.add_development_dependency "travis", "~> 1.8"
 end
