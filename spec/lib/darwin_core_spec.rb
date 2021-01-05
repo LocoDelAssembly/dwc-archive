@@ -70,7 +70,7 @@ describe DarwinCore do
 
     context "tar.gz and zip files supplied" do
       files = %w[data.zip data.tar.gz minimal.tar.gz junk_dir_inside.zip]
-      files = %w[data.tar.gz]
+
       files.each do |file|
         let(:file_path) { File.join(file_dir, file) }
 
