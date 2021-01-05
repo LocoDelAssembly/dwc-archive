@@ -70,6 +70,7 @@ describe DarwinCore do
 
     context "tar.gz and zip files supplied" do
       files = %w[data.zip data.tar.gz minimal.tar.gz junk_dir_inside.zip]
+      files = %w[data.tar.gz]
       files.each do |file|
         let(:file_path) { File.join(file_dir, file) }
 
@@ -108,6 +109,14 @@ describe DarwinCore do
 
       it "raises wrong encoding error" do
         expect { dwca }.to raise_error DarwinCore::EncodingError
+      end
+    end
+
+    context "meta.xml is invalid" do
+      let(:file_path) { File.join(file_dir, "invalid_meta.zip") }
+
+      it "raises invalid metadata error" do
+        expect { dwca }.to raise_error DarwinCore::InvalidMetadataError
       end
     end
 
@@ -182,7 +191,7 @@ describe DarwinCore do
     let(:file_path) { File.join(file_dir, "data.tar.gz") }
 
     it "creates checksum hash" do
-      expect(dwca.checksum).to eq "7d94fc28ffaf434b66fbc790aa5ef00d834057bf"
+      expect(dwca.checksum).to eq "31f0d227c1044f33d5503fea59e7ea37a004326f"
     end
   end
 

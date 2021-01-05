@@ -10,4 +10,10 @@ class DarwinCore
   class GeneratorError < Error; end
   class ParentNotCurrentError < Error; end
   class EncodingError < Error; end
+
+  class InvalidMetadataError < Error
+    def initialize(errors)
+      super(errors.map { |e| e.message }.join(';'))
+    end
+  end
 end

@@ -6,8 +6,12 @@ class DarwinCore
   # http://stackoverflow.com/questions/1230741/
   # convert-a-nokogiri-document-to-a-ruby-hash/1231297#1231297
   module XmlReader
-    def self.from_xml(xml_io)
+    def self.from_xml(xml_io, schema = nil)
       result = Nokogiri::XML(xml_io)
+      if schema
+        errors = Nokogiri::XML::Schema(schema).validate(result)
+        raise DarwinCore::InvalidMetadataError.new(errors) unless errors.empty?
+      end
       { result.root.name.to_sym => self::Node.new(result.root).value }
     end
 

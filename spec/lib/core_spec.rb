@@ -19,7 +19,6 @@ describe DarwinCore::Core do
   describe "#id" do
     it "returns core id" do
       expect(core.id[:index]).to eq 0
-      expect(core.id[:term]).to eq "http://rs.tdwg.org/dwc/terms/TaxonID"
     end
 
     context "no coreid" do
@@ -27,7 +26,6 @@ describe DarwinCore::Core do
 
       it "does not return coreid" do
         expect(core.id[:index]).to eq 0
-        expect(core.id[:term]).to be_nil
       end
     end
   end
