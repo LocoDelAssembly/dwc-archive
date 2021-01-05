@@ -5,9 +5,6 @@ require "rspec"
 require "rspec/mocks"
 require "socket"
 
-RSpec.configure do
-end
-
 unless defined?(SPEC_CONSTANTS)
   EML_DATA =
     {

@@ -1,13 +1,14 @@
+require:
+  - rubocop-rake
+#  - rubocop-rspec # TODO: Disabling for now. Too many offences to be dealt with and are not part of gem's shipped code.
+
 AllCops:
-  TargetRubyVersion: 2.6
+  NewCops: enable
+  TargetRubyVersion: 2.5
   Exclude:
     - features/**/*
     - .bundle/**/*
     - bundle_bin/**/*
-    - lib/dwc_archive/ingester.rb
-    - lib/dwc_archive/generator_meta_xml.rb
-    - lib/dwc_archive/generator_eml_xml.rb
-    - lib/dwc_archive/classification_normalizer.rb
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
@@ -21,3 +22,12 @@ Metrics/BlockLength:
     - '*.gemspec'
     - '**/*.rake'
     - 'spec/**/*spec.rb'
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/ClassLength:
+  Max: 400
+
+Metrics/MethodLength:
+  Max: 20

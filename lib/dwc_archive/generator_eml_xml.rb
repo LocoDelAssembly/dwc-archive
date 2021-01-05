@@ -1,19 +1,21 @@
+# frozen_string_literal: true
+
 class DarwinCore
   class Generator
     # Creates EML file with meta information about archive
     class EmlXml
       SCHEMA_DATA = {
-        :"xml:lang" =>           "en",
-        :"xmlns:eml" =>          "eml://ecoinformatics.org/eml-2.1.1",
-        :"xmlns:md" =>           "eml://ecoinformatics.org/methods-2.1.1",
-        :"xmlns:proj" =>         "eml://ecoinformatics.org/project-2.1.1",
-        :"xmlns:d" =>            "eml://ecoinformatics.org/dataset-2.1.1",
-        :"xmlns:res" =>          "eml://ecoinformatics.org/resource-2.1.1",
-        :"xmlns:dc" =>           "http://purl.org/dc/terms/",
-        :"xmlns:xsi" =>          "http://www.w3.org/2001/XMLSchema-instance",
-        :"xsi:schemaLocation" => "eml://ecoinformatics.org/eml-2.1.1 "\
+        "xml:lang": "en",
+        "xmlns:eml": "eml://ecoinformatics.org/eml-2.1.1",
+        "xmlns:md": "eml://ecoinformatics.org/methods-2.1.1",
+        "xmlns:proj": "eml://ecoinformatics.org/project-2.1.1",
+        "xmlns:d": "eml://ecoinformatics.org/dataset-2.1.1",
+        "xmlns:res": "eml://ecoinformatics.org/resource-2.1.1",
+        "xmlns:dc": "http://purl.org/dc/terms/",
+        "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "xsi:schemaLocation": "eml://ecoinformatics.org/eml-2.1.1 "\
           "http://rs.gbif.org/schema/eml-gbif-profile/1.0.1/eml.xsd"
-      }
+      }.freeze
 
       def initialize(data, path)
         @data = data
@@ -44,7 +46,7 @@ class DarwinCore
 
       def save_eml(builder)
         data = builder.to_xml
-        f = open(File.join(@path, "eml.xml"), @write)
+        f = File.open(File.join(@path, "eml.xml"), @write)
         f.write(data)
         f.close
       end
@@ -71,9 +73,9 @@ class DarwinCore
       end
 
       def build_metadata_providers(xml)
-        @data[:metadata_providers].each do |a|
+        @data[:metadata_providers]&.each do |a|
           xml.metadataProvider { build_person(xml, a) }
-        end if @data[:metadata_providers]
+        end
       end
 
       def build_authors(xml, contacts)
@@ -109,7 +111,7 @@ class DarwinCore
 
       def timestamp
         t = Time.now.getutc.to_a[0..5].reverse
-        t[0..2] * ("-") + "::" + t[-3..-1] * (":")
+        "#{t[0..2] * '-'}::#{t[-3..-1] * ':'}"
       end
     end
   end

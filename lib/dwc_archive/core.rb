@@ -6,7 +6,6 @@ class DarwinCore
     include DarwinCore::Ingester
     attr_reader :id
 
-    # rubocop:disable Metrics/MethodLength
     def initialize(dwc)
       @dwc = dwc
       @archive = @dwc.archive
@@ -21,5 +20,4 @@ class DarwinCore
       init_attributes
     end
   end
-  # rubocop:enable Metrics/MethodLength
 end

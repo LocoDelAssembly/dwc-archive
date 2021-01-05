@@ -19,18 +19,22 @@ class DarwinCore
       DarwinCore.clean(@path)
     end
 
+    # rubocop:disable Style/OptionalBooleanParameter # Cannot follow style, method is public.
     def add_core(data, file_name, keep_headers = true)
       opts = { type: "core", data: data, file_name: file_name,
                keep_headers: keep_headers }
       prepare_csv_file(opts)
     end
+    # rubocop:enable Style/OptionalBooleanParameter
 
+    # rubocop:disable Style/OptionalBooleanParameter # Cannot follow style, method is public.
     def add_extension(data, file_name, keep_headers = true,
                       row_type = "http://rs.tdwg.org/dwc/terms/Taxon")
       opts = { type: "extension", data: data, file_name: file_name,
                keep_headers: keep_headers, row_type: row_type }
       prepare_csv_file(opts)
     end
+    # rubocop:enable Style/OptionalBooleanParameter
 
     def add_meta_xml
       meta = DarwinCore::Generator::MetaXml.new(@meta_xml_data, @path)
@@ -83,6 +87,7 @@ class DarwinCore
         f = f.strip
         err = "No header in #{file_type} data, or header fields are not urls"
         raise DarwinCore::GeneratorError, err unless f =~ %r{^http://}
+
         f.split("/")[-1]
       end
     end

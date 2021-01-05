@@ -1,31 +1,37 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 class DarwinCore
   # This module abstracts information for reading csv file to be used
   # in several classes which need such functionality
   module Ingester
-    attr_reader :data, :properties, :encoding, :fields_separator, :size
-    attr_reader :file_path, :fields, :line_separator, :quote_character,
-                :ignore_headers
+    attr_reader :data, :properties, :encoding, :fields_separator, :file_path, :fields, :line_separator,
+                :quote_character, :ignore_headers
 
     def size
       @size ||= init_size
     end
 
+    # TODO: Check if refactorable
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def read(batch_size = 10_000)
       DarwinCore.logger_write(@dwc.object_id, "Reading #{name} data")
       res = []
       errors = []
       args = define_csv_args
-      min_size = @fields.map { |f| f[:index].to_i || 0 }.sort[-1] + 1
-      csv = CSV.new(open(@file_path), **args)
+      min_size = @fields.map { |f| f[:index].to_i || 0 }.max + 1
+      csv = CSV.new(File.open(@file_path), **args)
       csv.each_with_index do |r, i|
-        next if @ignore_headers && i == 0
+        next if @ignore_headers && i.zero?
+
         min_size > r.size ? errors << r : process_csv_row(res, errors, r)
-        next if i == 0 || i % batch_size != 0
+        next if i.zero? || i % batch_size != 0
+
         DarwinCore.logger_write(@dwc.object_id,
-                                format("Ingested %s records from %s",
-                                       i, name))
+                                format("Ingested %<records>s records from %<name>s",
+                                       records: i, name: name))
         next unless block_given?
+
         yield [res, errors]
         res = []
         errors = []
@@ -33,6 +39,8 @@ class DarwinCore
       yield [res, errors] if block_given?
       [res, errors]
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
     private
 
@@ -47,7 +55,7 @@ class DarwinCore
     end
 
     def process_csv_row(result, errors, row)
-      str = row.join("")
+      str = row.join
       str = str.force_encoding("utf-8")
       if str.encoding.name == "UTF-8" && str.valid_encoding?
         result << row.map { |f| f.nil? ? nil : f.force_encoding("utf-8") }
@@ -70,12 +78,13 @@ class DarwinCore
 
     def init_encoding
       @encoding = @properties[:encoding] || "UTF-8"
-      accepted_encoding = ["utf-8", "utf8", "utf-16", "utf16"].
+      accepted_encoding = %w[utf-8 utf8 utf-16 utf16].
                           include?(@encoding.downcase)
-      fail(
-        DarwinCore::EncodingError,
-        "No support for encodings other than utf-8 or utf-16 at the moment"
-      ) unless accepted_encoding
+
+      return if accepted_encoding
+
+      raise DarwinCore::EncodingError,
+            "No support for encodings other than utf-8 or utf-16 at the moment"
     end
 
     def init_file_path
@@ -83,14 +92,17 @@ class DarwinCore
              @data[:attributes][:location] ||
              @data[:files][:location]
       @file_path = File.join(@path, file)
-      fail DarwinCore::FileNotFoundError, "No file data" unless @file_path
+      raise DarwinCore::FileNotFoundError, "No file data" unless @file_path
     end
 
     def init_fields
       @data[:field] = [data[:field]] if data[:field].class != Array
       @fields = @data[:field].map { |f| f[:attributes] }
-      fail DarwinCore::InvalidArchiveError,
-           "No data fields are found" if @fields.empty?
+
+      return unless @fields.empty?
+
+      raise DarwinCore::InvalidArchiveError,
+            "No data fields are found"
     end
 
     def init_field_separator
@@ -100,7 +112,7 @@ class DarwinCore
     end
 
     def init_size
-      `wc -l #{@file_path}`.match(/^\s*([\d]+)\s/)[1].to_i
+      `wc -l #{@file_path}`.match(/^\s*(\d+)\s/)[1].to_i
     end
   end
 end

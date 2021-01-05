@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DarwinCore
   class Generator
     # Creates DarwinCore meta file
@@ -24,15 +26,15 @@ class DarwinCore
 
       def save_meta(builder)
         meta_xml_data = builder.to_xml
-        meta_file = open(File.join(@path, "meta.xml"), @write)
+        meta_file = File.open(File.join(@path, "meta.xml"), @write)
         meta_file.write(meta_xml_data)
         meta_file.close
       end
 
       def build_archive(xml, opts, schema_uri)
         xml.archive(xmlns: "http://rs.tdwg.org/dwc/text/",
-                    :"xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
-                    :"xsi:schemaLocation" => schema_uri) do
+                    "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                    "xsi:schemaLocation": schema_uri) do
           build_core(xml, opts)
           build_extensions(xml, opts)
         end
@@ -63,8 +65,9 @@ class DarwinCore
       def find_taxon_id(data)
         fields = []
         data.each_with_index { |f, i| fields << [f.strip, i] }
-        taxon_id, fields = fields.partition { |f| f[0].match(/\/taxonid$/i) }
-        fail DarwinCore::GeneratorError if taxon_id.size != 1
+        taxon_id, fields = fields.partition { |f| f[0].match(%r{/taxonid$}i) }
+        raise DarwinCore::GeneratorError if taxon_id.size != 1
+
         [taxon_id[0], fields]
       end
     end
