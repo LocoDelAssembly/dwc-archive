@@ -17,7 +17,7 @@ class DarwinCore
       errors = []
       args = define_csv_args
       min_size = @fields.map { |f| f[:index].to_i || 0 }.sort[-1] + 1
-      csv = CSV.new(open(@file_path), args)
+      csv = CSV.new(open(@file_path), **args)
       csv.each_with_index do |r, i|
         next if @ignore_headers && i == 0
         min_size > r.size ? errors << r : process_csv_row(res, errors, r)
