@@ -14,9 +14,7 @@ end
 
 Cucumber::Rake::Task.new(:features)
 
-RuboCop::RakeTask.new do |t|
-  t.options = ["-c", ".rubocop.yml"]
-end
+RuboCop::RakeTask.new
 
 task default: %i[rubocop features spec]
 
