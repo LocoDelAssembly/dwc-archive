@@ -9,6 +9,7 @@ AllCops:
     - features/**/*
     - .bundle/**/*
     - bundle_bin/**/*
+    - vendor/bundle/**/*
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
