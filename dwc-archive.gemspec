@@ -27,7 +27,7 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency "bundler", "~> 2.1"
   gem.add_development_dependency "byebug", "~> 11.1"
-  gem.add_development_dependency "codecov", "~> 0.2.15"
+  gem.add_development_dependency "codecov", "~> 0.3.0"
   gem.add_development_dependency "cucumber", "~> 4"
   gem.add_development_dependency "git", "~> 1.7"
   gem.add_development_dependency "rake", "~> 13"
