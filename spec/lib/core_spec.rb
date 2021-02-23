@@ -80,7 +80,7 @@ describe DarwinCore::Core do
 
   describe "#line_separator" do
     it "returns characters separating lines in csv file" do
-      expect(core.line_separator).to eq "\\n"
+      expect(core.line_separator).to eq "\n"
     end
   end
 

@@ -46,8 +46,8 @@ class DarwinCore
 
     def define_csv_args
       args = { col_sep: @field_separator }
-      @quote_character = "\b" if @quote_character.empty?
-      args.merge(quote_char: @quote_character)
+      args.merge!(quote_char: @quote_character&.empty? ? "\x00" : @quote_character)
+      args.merge!(row_sep: @line_separator)
     end
 
     def name
@@ -67,9 +67,10 @@ class DarwinCore
     def init_attributes
       @properties = @data[:attributes]
       init_encoding
-      @field_separator = init_field_separator
-      @quote_character = @properties[:fieldsEnclosedBy] || ""
-      @line_separator = @properties[:linesTerminatedBy] || "\n"
+      @field_separator = undump_attribute(@properties[:fieldsTerminatedBy], ",")
+      @quote_character = undump_attribute(@properties[:fieldsEnclosedBy], "")
+      @line_separator = undump_attribute(@properties[:linesTerminatedBy], "\n")
+
       @ignore_headers = @properties[:ignoreHeaderLines] &&
                         [1, true].include?(@properties[:ignoreHeaderLines])
       init_file_path
@@ -105,10 +106,11 @@ class DarwinCore
             "No data fields are found"
     end
 
-    def init_field_separator
-      res = @properties[:fieldsTerminatedBy] || ","
-      res = "\t" if res == "\\t"
-      res
+    def undump_attribute(value, default)
+      return unless value
+
+      res = "\"#{value.gsub(/(?<!\\)"/, '\"')}\"".undump
+      res.empty? ? default : res
     end
 
     def init_size
