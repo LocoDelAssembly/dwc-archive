@@ -42,6 +42,19 @@ class DarwinCore
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity
 
+    def read_header
+      res = []
+      errors = []
+
+      if @ignore_headers
+        CSV.open(@file_path, "r", **define_csv_args) do |csv|
+          process_csv_row(res, errors, csv.first)
+        end
+      end
+
+      [res.first, errors.first]
+    end
+
     private
 
     def define_csv_args
