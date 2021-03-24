@@ -16,7 +16,7 @@ class DarwinCore
         raise DarwinCore::CoreFileError,
               "Cannot find core in meta.xml, is meta.xml valid?"
       end
-      @id = @data[:id][:attributes]
+      @id = @data.dig(:id, :attributes)
       init_attributes
     end
   end
