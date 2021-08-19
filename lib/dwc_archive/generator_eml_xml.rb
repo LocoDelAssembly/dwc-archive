@@ -14,7 +14,7 @@ class DarwinCore
         "xmlns:dc": "http://purl.org/dc/terms/",
         "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
         "xsi:schemaLocation": "eml://ecoinformatics.org/eml-2.1.1 "\
-          "http://rs.gbif.org/schema/eml-gbif-profile/1.0.1/eml.xsd"
+                              "http://rs.gbif.org/schema/eml-gbif-profile/1.0.1/eml.xsd"
       }.freeze
 
       def initialize(data, path)
