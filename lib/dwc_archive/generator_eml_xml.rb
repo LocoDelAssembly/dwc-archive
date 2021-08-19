@@ -111,7 +111,7 @@ class DarwinCore
 
       def timestamp
         t = Time.now.getutc.to_a[0..5].reverse
-        "#{t[0..2] * '-'}::#{t[-3..-1] * ':'}"
+        "#{t[0..2] * '-'}::#{t[-3..] * ':'}"
       end
     end
   end
