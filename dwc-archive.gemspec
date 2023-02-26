@@ -18,7 +18,6 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = ">= 2.6.0"
   gem.files         = `git ls-files`.split("\n").map(&:strip)
   gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
   # gem.add_runtime_dependency "minitar", "~> 0.6"
@@ -37,4 +36,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rubocop-rspec", "~> 2.1"
   gem.add_development_dependency "solargraph", "~> 0.40"
   gem.add_development_dependency "travis", "~> 1.10"
+  gem.metadata["rubygems_mfa_required"] = "true"
 end

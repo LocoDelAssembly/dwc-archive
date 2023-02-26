@@ -11,7 +11,7 @@ class DarwinCore
       end
 
       def create
-        schema_uri = "http://rs.tdwg.org/dwc/terms/xsd/archive/ "\
+        schema_uri = "http://rs.tdwg.org/dwc/terms/xsd/archive/ " \
                      "http://darwincore.googlecode.com/svn/trunk/text/tdwg_dwc_text.xsd"
         builder = Nokogiri::XML::Builder.new do |xml|
           opts = { encoding: "UTF-8", fieldsTerminatedBy: ",",
