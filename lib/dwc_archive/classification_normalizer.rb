@@ -212,7 +212,7 @@ class DarwinCore
 
     def calculate_classification_path
       @paths_num = 0
-      @normalized_data.each do |_taxon_id, taxon|
+      @normalized_data.each_value do |taxon|
         next unless taxon.classification_path_id.empty?
 
         res = get_classification_path(taxon)

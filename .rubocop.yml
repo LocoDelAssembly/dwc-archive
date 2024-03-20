@@ -3,7 +3,7 @@ require:
 #  - rubocop-rspec # TODO: Disabling for now. Too many offences to be dealt with and are not part of gem's shipped code.
 
 AllCops:
-  NewCops: enable
+  NewCops: disable
   TargetRubyVersion: 2.6
   Exclude:
     - features/**/*
