@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   # gem.add_runtime_dependency "minitar", "~> 0.6"
-  gem.add_runtime_dependency "biodiversity", "~> 5.3"
+  gem.add_runtime_dependency "biodiversity", "~> 6.0"
   gem.add_runtime_dependency "nokogiri", "~> 1.11"
 
   gem.add_development_dependency "byebug", "~> 11.1"
