@@ -9,9 +9,9 @@ name: build
 
 on:
   push:
-    branches: [ master, overhaul ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, overhaul ]
+    branches: [ master ]
 
 jobs:
   test:
