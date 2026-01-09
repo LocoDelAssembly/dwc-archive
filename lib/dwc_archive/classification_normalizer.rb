@@ -222,7 +222,6 @@ class DarwinCore
 
     # TODO: Consider refactor this method. Too many offences.
     # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/BlockNesting
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/PerceivedComplexity

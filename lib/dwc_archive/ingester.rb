@@ -71,7 +71,7 @@ class DarwinCore
       str = row.join
       str = str.force_encoding("utf-8")
       if str.encoding.name == "UTF-8" && str.valid_encoding?
-        result << row.map { |f| f.nil? ? nil : f.force_encoding("utf-8") }
+        result << row.map { |f| f&.force_encoding("utf-8") }
       else
         errors << row
       end
