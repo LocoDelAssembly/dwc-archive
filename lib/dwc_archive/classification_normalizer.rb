@@ -305,7 +305,6 @@ class DarwinCore
       end
     end
     # rubocop:enable Metrics/AbcSize
-    # rubocop:enable Metrics/BlockNesting
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/PerceivedComplexity
