@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "set"
-
 describe DarwinCore do
   subject { DarwinCore }
   let(:file_dir) { File.expand_path("../files", __dir__) }
