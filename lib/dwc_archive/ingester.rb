@@ -59,7 +59,7 @@ class DarwinCore
 
     def define_csv_args
       args = { col_sep: @field_separator }
-      args.merge!(quote_char: @quote_character&.empty? ? "\x00" : @quote_character)
+      args.merge!(quote_char: @quote_character && @quote_character.empty? ? "\x00" : @quote_character)
       args.merge!(row_sep: @line_separator)
     end
 
