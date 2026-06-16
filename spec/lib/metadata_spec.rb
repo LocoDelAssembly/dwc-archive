@@ -81,7 +81,7 @@ describe DarwinCore::Metadata do
     describe "#url" do
       it "returns url to the archive" do
         expect(eml.url).
-          to eq "http://leptogastrinae.lifedesks.org/files/leptogastrinae/"\
+          to eq "http://leptogastrinae.lifedesks.org/files/leptogastrinae/" \
                 "classification_export/shared/leptogastrinae.tar.gz"
       end
     end

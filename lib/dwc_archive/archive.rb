@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "archive/schema"
+
 class DarwinCore
   # Deals with handling DarwinCoreArchive file, and provides meta information
   # and files information about archive
@@ -16,8 +18,8 @@ class DarwinCore
 
     def valid?
       valid = true
-      valid = valid && @expander.path && FileTest.exists?(@expander.path)
-      valid && files && files.include?("meta.xml")
+      valid = valid && @expander.path && FileTest.exist?(@expander.path)
+      valid && files&.include?("meta.xml")
     end
 
     def files
@@ -46,12 +48,13 @@ class DarwinCore
 
     def prepare_meta_file
       meta_file = File.open(File.join(@expander.path, "meta.xml"))
-      @meta = DarwinCore::XmlReader.from_xml(meta_file)
+      @meta = DarwinCore::XmlReader.from_xml(meta_file, SCHEMA)
     end
 
     def prepare_eml_file
       @eml = nil
       return unless files.include?("eml.xml")
+
       eml_file = File.open(File.join(@expander.path, "eml.xml"))
       @eml = DarwinCore::XmlReader.from_xml(eml_file)
     end

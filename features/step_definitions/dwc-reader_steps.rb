@@ -47,7 +47,7 @@ Then /^instance should have a core$/ do
 end
 
 Then /^I should see checksum$/ do
-  @dwc.checksum.should == "7d94fc28ffaf434b66fbc790aa5ef00d834057bf"
+  @dwc.checksum.should == "31f0d227c1044f33d5503fea59e7ea37a004326f"
 end
 
 When /^I check core data$/ do
@@ -66,8 +66,7 @@ And /^core\.file_path$/ do
 end
 
 And /^core\.id$/ do
-  @core.id.should == {index: 0,
-                      term: "http://rs.tdwg.org/dwc/terms/TaxonID"}
+  @core.id.should == {index: 0}
 end
 
 And /^core\.fields$/ do

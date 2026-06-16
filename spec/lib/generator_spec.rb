@@ -96,7 +96,7 @@ describe DarwinCore::Generator do
 
   describe "#pack" do
     before(:example) do
-      FileUtils.rm dwc_path if File.exist?(dwc_path)
+      FileUtils.rm_f dwc_path
       generate_dwca(gen)
     end
 

@@ -51,7 +51,7 @@ class DarwinCore
       if parent_id?
         calculate_classification_path
       else
-        @normalized_data.keys.each { |id| @tree[id] = {} }
+        @normalized_data.each_key { |id| @tree[id] = {} }
       end
       DarwinCore.logger_write(@dwc.object_id, "Ingesting data from extensions")
       ingest_extensions if opts[:with_extensions]
@@ -73,7 +73,7 @@ class DarwinCore
       return nil unless @with_canonical_names
 
       canonical_name = Biodiversity::Parser.parse(a_scientific_name).
-                       dig(:canonicalName, :simple)
+                       dig(:canonical, :simple)
       canonical_name.to_s.empty? ? a_scientific_name : canonical_name
     end
 
@@ -118,8 +118,8 @@ class DarwinCore
       if separate_canonical_and_authorship?(row, fields)
         canonical_name = row[fields[:scientificname]].strip if @with_canonical_names
         scientific_name += " #{row[fields[:scientificnameauthorship]].strip}"
-      else
-        canonical_name = get_canonical_name(row[fields[:scientificname]]) if @with_canonical_names
+      elsif @with_canonical_names
+        canonical_name = get_canonical_name(row[fields[:scientificname]])
       end
       fields[:canonicalname] = row.size
       row << canonical_name
@@ -132,6 +132,12 @@ class DarwinCore
       !(authorship.empty? || row[fields[:scientificname]].index(authorship))
     end
 
+    # TODO: Consider refactor this method. Too many offences.
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/BlockLength
     def ingest_core
       @normalized_data = {}
       has_name_and_id = @core_fields[:id] && @core_fields[:scientificname]
@@ -189,10 +195,15 @@ class DarwinCore
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/BlockLength
 
     def parent_id?
-      @has_parent_id ||= @core_fields.key?(:highertaxonid) ||
-                         @core_fields.key?(:parentnameusageid)
+      @parent_id ||= @core_fields.key?(:highertaxonid) ||
+                     @core_fields.key?(:parentnameusageid)
     end
 
     def parent_id
@@ -201,7 +212,7 @@ class DarwinCore
 
     def calculate_classification_path
       @paths_num = 0
-      @normalized_data.each do |_taxon_id, taxon|
+      @normalized_data.each_value do |taxon|
         next unless taxon.classification_path_id.empty?
 
         res = get_classification_path(taxon)
@@ -209,11 +220,16 @@ class DarwinCore
       end
     end
 
+    # TODO: Consider refactor this method. Too many offences.
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/PerceivedComplexity
     def get_classification_path(taxon)
       return unless taxon.classification_path_id.empty?
 
       @paths_num += 1
-      if @paths_num % 10_000 == 0
+      if (@paths_num % 10_000).zero?
         DarwinCore.logger_write(@dwc.object_id,
                                 "Calculated #{@paths_num} paths")
       end
@@ -288,6 +304,10 @@ class DarwinCore
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/PerceivedComplexity
 
     def ingest_extensions
       @extensions.each do |e|
