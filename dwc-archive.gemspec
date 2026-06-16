@@ -25,7 +25,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "nokogiri", "~> 1.11"
 
   gem.add_development_dependency "byebug", "~> 11.1"
-  gem.add_development_dependency "codecov", "~> 0.3.0"
+  # gem.add_development_dependency "codecov", "~> 0.3.0"
   gem.add_development_dependency "cucumber", "~> 9.2"
   gem.add_development_dependency "git", "~> 1.8"
   gem.add_development_dependency "rake", "~> 13"
